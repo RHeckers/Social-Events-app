@@ -1,0 +1,13 @@
+API/bin
+API/obj
+Application/bin
+Application/obj
+Domain/bin
+Domain/obj
+Persistence/bin
+Persistence/obj
+obj
+bin
+.vscode
+appsettings.json
+*.db
