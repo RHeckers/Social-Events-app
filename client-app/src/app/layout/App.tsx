@@ -27,6 +27,10 @@ const App = () => {
     setEditMode(false);
   }
 
+  const handleDeleteActivity = (id: string) => {
+    setActivities([...activities.filter(a => a.id !== id)]);
+  }
+
   const handleOpenCreateForm = () => {
     setSelectedActivity(null);
     setEditMode(true);
@@ -38,7 +42,7 @@ const App = () => {
       res.data.forEach(activity => {
         activity.date = activity.date.split('.')[0];
         activities.push(activity);
-      })
+      });
       setActivities(activities);
     });
   }, []);
@@ -55,6 +59,7 @@ const App = () => {
           setActivities={setSelectedActivity}
           createActivity={handleCreateActivity}
           editActivity={handleEditActivity}
+          deleteActivity={handleDeleteActivity}
           selectActivity={handleSelectActivity}>
         </ActivityDashboard>
       </Container>

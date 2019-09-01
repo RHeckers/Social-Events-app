@@ -5,9 +5,10 @@ import { IActivity } from "../../../app/interfaces/IActivity";
 interface IPros {
   activities: IActivity[];
   selectActivity: (id: string) => void;
+  deleteActivity: (id: string) => void;
 }
 
-const ActivityList: React.FC<IPros> = ({ activities, selectActivity }) => {
+const ActivityList: React.FC<IPros> = ({ activities, selectActivity, deleteActivity }) => {
   return (
     <Segment clearing>
       <Item.Group divided>
@@ -28,6 +29,12 @@ const ActivityList: React.FC<IPros> = ({ activities, selectActivity }) => {
                   floated="right"
                   content="View"
                   color="blue"
+                ></Button>
+                <Button
+                  onClick={() => deleteActivity(activity.id)}
+                  floated="right"
+                  content="Delete"
+                  color="red"
                 ></Button>
                 <Label basic content={activity.category} />
               </Item.Extra>

@@ -14,6 +14,7 @@ interface IPros {
     setActivities: (activity: IActivity | null) => void;
     editActivity: (activity: IActivity) => void;
     createActivity: (activity: IActivity) => void;
+    deleteActivity: (id: string) => void;
 }
 
 const ActivityDashboard: React.FC<IPros> = ({
@@ -24,12 +25,16 @@ const ActivityDashboard: React.FC<IPros> = ({
     setEditMode,
     setActivities,
     editActivity,
-    createActivity
+    createActivity,
+    deleteActivity
   }) => {
   return (
     <Grid>
       <Grid.Column width={10}>
-          <ActivityList activities={activities} selectActivity={selectActivity} />
+          <ActivityList 
+            activities={activities} 
+            deleteActivity={deleteActivity}
+            selectActivity={selectActivity} />
       </Grid.Column>
       <Grid.Column width={6}>
          {selectedActivity && !editMode && (
