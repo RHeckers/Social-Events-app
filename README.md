@@ -4,4 +4,5 @@
  
  # The backend is made with .net core with Entity Framework and the Mediator Pattern
  
- # The front-end will be made in React, but there is not much done on the front-end at this point. 
+ # The front-end will be made in React. 
+React hooks are used. Activity list, dashboard, crud operations on Activities created so far 
