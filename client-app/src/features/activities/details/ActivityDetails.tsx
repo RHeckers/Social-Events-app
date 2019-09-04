@@ -1,42 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card, Image, Button } from "semantic-ui-react";
-import { IActivity } from "../../../app/interfaces/IActivity";
+import ActivityStore from '../../../app/stores/activityStore';
+import { observer } from "mobx-react-lite";
 
-interface IPros {
-  activity: IActivity;
-  setEditMode: (editMode: boolean) => void;
-  setActivities: (activity: IActivity | null) => void;
-}
-
-const ActivityDetails: React.FC<IPros> = ({
-  activity,
-  setEditMode,
-  setActivities
-}) => {
+const ActivityDetails: React.FC = () => {
+  const activityStore = useContext(ActivityStore);
+  const { selectedActivity: activity, openEditForm, cancelSelectedActivity } = activityStore
   return (
     <Card fluid>
       <Image
-        src={`/assets/categoryImages/${activity.category}.jpg`}
+        src={`/assets/categoryImages/${activity!.category}.jpg`}
         wrapped
         ui={false}
       />
       <Card.Content>
-        <Card.Header>{activity.title}</Card.Header>
+        <Card.Header>{activity!.title}</Card.Header>
         <Card.Meta>
-          <span className="date">{activity.date}</span>
+          <span className="date">{activity!.date}</span>
         </Card.Meta>
-        <Card.Description>{activity.description}</Card.Description>
+        <Card.Description>{activity!.description}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Button.Group widths={2}>
           <Button
-            onClick={() => setEditMode(true)}
+            onClick={() => openEditForm(activity!.id)}
             basic
             color="blue"
             content="Edit"
           />
           <Button
-            onClick={() => setActivities(null)}
+            onClick={() => cancelSelectedActivity()}
             basic
             color="grey"
             content="Cancel"
@@ -47,4 +40,4 @@ const ActivityDetails: React.FC<IPros> = ({
   );
 };
 
-export default ActivityDetails;
+export default observer(ActivityDetails);
