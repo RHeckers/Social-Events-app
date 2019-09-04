@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import { Grid } from "semantic-ui-react";
 import { IActivity } from "../../../app/interfaces/IActivity";
 import ActivityList from './ActivityList';
@@ -14,7 +14,9 @@ interface IPros {
     setActivities: (activity: IActivity | null) => void;
     editActivity: (activity: IActivity) => void;
     createActivity: (activity: IActivity) => void;
-    deleteActivity: (id: string) => void;
+    deleteActivity: (e: SyntheticEvent<HTMLButtonElement>, id: string) => void;
+    submitting: boolean;
+    target: string
 }
 
 const ActivityDashboard: React.FC<IPros> = ({
@@ -26,13 +28,17 @@ const ActivityDashboard: React.FC<IPros> = ({
     setActivities,
     editActivity,
     createActivity,
-    deleteActivity
+    deleteActivity,
+    submitting,
+    target
   }) => {
   return (
     <Grid>
       <Grid.Column width={10}>
           <ActivityList 
             activities={activities} 
+            submitting={submitting}
+            target={target}
             deleteActivity={deleteActivity}
             selectActivity={selectActivity} />
       </Grid.Column>
@@ -45,6 +51,7 @@ const ActivityDashboard: React.FC<IPros> = ({
           )}
          {editMode && 
             <ActivityForm 
+              submitting={submitting}
               key={selectedActivity && selectedActivity.id || 0}
               setEditMode={setEditMode} 
               activity={selectedActivity!} 
