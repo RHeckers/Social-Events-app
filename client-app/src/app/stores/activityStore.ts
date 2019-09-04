@@ -19,7 +19,7 @@ class ActivityStore {
   }
 
   @action loadActivities = async () => {
-    this.loadingInitial = true;
+    // this.loadingInitial = true;
     try {
       const activities = await agent.Activities.list();
       runInAction('loading activities', () => {
@@ -42,7 +42,7 @@ class ActivityStore {
     if (activity) {
       this.activity = activity;
     } else {
-      this.loadingInitial = true;
+      // this.loadingInitial = true;
       try {
         activity = await agent.Activities.details(id);
         runInAction('getting activity',() => {
