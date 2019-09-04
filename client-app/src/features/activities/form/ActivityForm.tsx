@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import ActivityStore from '../../../app/stores/activityStore';
 import { observer } from 'mobx-react-lite';
 import { RouteComponentProps } from 'react-router';
+import { Link } from 'react-router-dom';
 
 interface DetailParams {
   id: string;
@@ -113,7 +114,8 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
           content='Submit'
         />
         <Button
-          onClick={() => history.push('/activities')}
+          as={Link}
+          to={match.params.id ? `/activities/${match.params.id}` : '/activities'}
           floated='right'
           type='button'
           content='Cancel'
