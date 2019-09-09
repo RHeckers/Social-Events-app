@@ -9,5 +9,6 @@ Persistence/obj
 obj
 bin
 .vscode
+.vs
 appsettings.json
 *.db

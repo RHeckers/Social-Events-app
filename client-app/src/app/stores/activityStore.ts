@@ -38,7 +38,6 @@ class ActivityStore {
         });
         this.loadingInitial = false;
       })
-      console.log(this.groupActivitiesByDate(activities));
     } catch (error) {
       runInAction('load activities error', () => {
         this.loadingInitial = false;
@@ -61,7 +60,7 @@ class ActivityStore {
       } catch (error) {
         runInAction('get activity error', () => {
           this.loadingInitial = false;
-        })
+        });
         console.log(error);
       }
     }
