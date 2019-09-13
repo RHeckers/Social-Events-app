@@ -7,10 +7,12 @@ using FluentValidation.AspNetCore;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,9 +46,14 @@ namespace API
             // Add mediator 
             services.AddMediatR(typeof(List.Handler).Assembly);
             // Add MVC
-            services.AddMvc()
-            .AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Create>())
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(opt => {
+                // Create Auth policy for all requests
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                // Add Auth policy
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            })
+                .AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Create>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Configure Identity
             var builder = services.AddIdentityCore<AppUser>();
@@ -55,7 +62,8 @@ namespace API
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
             // Generate key and add authentication as a service
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuPer SeCret KeY For SaltIng the PaasWords"));
+            // TokenKey only avalible in dev mode
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -84,6 +92,7 @@ namespace API
                 // app.UseHsts();
             }
 
+            // Use services in the app configuration -- order is important
             // app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseCors("CorsPolicy");

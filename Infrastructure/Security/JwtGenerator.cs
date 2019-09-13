@@ -5,12 +5,22 @@ using System.Security.Claims;
 using System.Text;
 using Application.Interfaces;
 using Domain;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Security
 {
     public class JwtGenerator : IJwtGenerator
-    {
+    {    
+        private readonly SymmetricSecurityKey _key;
+        public JwtGenerator(IConfiguration configuration)
+        {
+            // TokenKey only avalible in dev mode
+            // Generate key to sign tokens
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
+        }
+
+
         public string CreateToken(AppUser user)
         {
             // Create claims for the token
@@ -21,9 +31,8 @@ namespace Infrastructure.Security
             };
 
             // Generate signing credentials
-            // First create key and credentials
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuPer SeCret KeY For SaltIng the PaasWords"));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            // First create credentials
+            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             // Create descriptor and add claims and credentials
             var tokenDescriptor = new SecurityTokenDescriptor
