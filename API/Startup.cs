@@ -75,6 +75,9 @@ namespace API
             });
             // Add IJWT as service with concrete instance of JwtGenerator
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+
+            // Add IUserAccessor as a service with concrete instance of UserAccessor
+            services.AddScoped<IUserAccessor, UserAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

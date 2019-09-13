@@ -12,8 +12,8 @@ namespace API.Controllers
     public class ActivitiesController : BaseController
     {
 
-        [HttpGet]
         [AllowAnonymous]
+        [HttpGet]
         public async Task<ActionResult<List<Activity>>> List()
         {
             return await Mediator.Send(new List.Query());
