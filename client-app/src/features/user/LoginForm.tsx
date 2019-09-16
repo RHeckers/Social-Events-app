@@ -35,7 +35,7 @@ const LoginForm = () => {
         <Form onSubmit={handleSubmit} error>
           <Header
             as='h2'
-            content='Login to SocialEvents'
+            content='Login to Reactivities'
             color='teal'
             textAlign='center'
           />
