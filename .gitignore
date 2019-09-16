@@ -12,3 +12,4 @@ bin
 .vs
 appsettings.json
 *.db
+Persistence/Migrations
