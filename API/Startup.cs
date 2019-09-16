@@ -67,6 +67,14 @@ namespace API
             identityBuilder.AddEntityFrameworkStores<DataContext>();
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
+            // Add custom request validator IsHost
+            services.AddAuthorization(opt => {
+                opt.AddPolicy("IsActivityHost", policy => {
+                    policy.Requirements.Add(new IsHostRequirement());
+                });
+            });
+            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+
             // Generate key and add authentication as a service
             // TokenKey only avalible in dev mode
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
