@@ -12,6 +12,8 @@ namespace Domain
         public DateTime Date { get; set; }
         public string City { get; set; }
         public string Venue { get; set; }
-        public ICollection<UserActivity> UserActivities { get; set; }
+
+        // Virtual to lazy load the related data incombination with UseLazyLoadingProxies
+        public virtual ICollection<UserActivity> UserActivities { get; set; }
     }
 }
