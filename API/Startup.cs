@@ -5,6 +5,7 @@ using Application.Interfaces;
 using AutoMapper;
 using Domain;
 using FluentValidation.AspNetCore;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -92,6 +93,13 @@ namespace API
 
             // Add IUserAccessor as a service with concrete instance of UserAccessor
             services.AddScoped<IUserAccessor, UserAccessor>();
+
+            // Add photo IPhotoAccessor as a service with concrete instance of PhotoAccessor
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+
+            // Add Cloudinary configuration, strongly type to the Cloudinary section of user-secrets
+            services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

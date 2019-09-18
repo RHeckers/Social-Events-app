@@ -45,6 +45,8 @@ namespace Persistence.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("Bio");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -90,6 +92,24 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Domain.Photo", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AppUserId");
+
+                    b.Property<bool>("IsMain");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("Domain.UserActivity", b =>
                 {
                     b.Property<string>("AppUserId");
@@ -117,23 +137,6 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Values");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Value 101"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Value 102"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Value 103"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -241,6 +244,13 @@ namespace Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Domain.Photo", b =>
+                {
+                    b.HasOne("Domain.AppUser")
+                        .WithMany("Photos")
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("Domain.UserActivity", b =>

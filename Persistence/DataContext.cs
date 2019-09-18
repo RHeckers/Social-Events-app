@@ -11,20 +11,18 @@ namespace Persistence
         {
         }
 
+        // Add data base tables
         public DbSet<Value> Values { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<UserActivity> UserActivities { get; set; }
+        public DbSet<Photo> Photos { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
-            builder.Entity<Value>()
-            .HasData(
-                new Value { Id = 1, Name = "Value 101"},
-                new Value { Id = 2, Name = "Value 102"},
-                new Value { Id = 3, Name = "Value 103"}
-            );
 
+            // Configure many to many relatioship of UserActivity
+            // UserActivity has onse AppUSer with Many UserActivities
+            // User Activity has one Activity with Many UserActivities
             builder.Entity<UserActivity>(x => x.HasKey(ua => new {ua.AppUserId, ua.ActivityId}));
 
             builder.Entity<UserActivity>().HasOne(u => u.AppUser).WithMany(a => a.UserActivities)
